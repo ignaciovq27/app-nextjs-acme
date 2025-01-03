@@ -1,3 +1,4 @@
+'use client';
 
 //COMPONENTS
 import AcmeLogo from '@/app/ui/acme-logo';
@@ -10,6 +11,7 @@ import { lusitana } from '@/app/ui/fonts';
 
 //CCS
 import styles from '@/app/ui/home.module.css';
+import DeleteUserButton from './ui/button-delete';
 
 export default function Page() {
   return (
@@ -45,6 +47,8 @@ export default function Page() {
           >
             <span>Dashboard</span> <ArrowRightIcon className="w-5 md:w-6" />
           </Link>
+          <DeleteUserButton />
+
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           {/* Add Hero Images Here */}

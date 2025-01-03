@@ -1,26 +1,73 @@
-// import { db } from "@vercel/postgres";
+import { db } from "@vercel/postgres";
 
-// const client = await db.connect();
+// Función para obtener las facturas (invoices)
+async function getInvoices() {
+  const invoicesData = await db.sql`
+    SELECT invoices.amount, customers.name
+    FROM invoices
+    JOIN customers ON invoices.customer_id = customers.id
+    WHERE invoices.amount = 666;
+  `;
+  return invoicesData.rows;
+}
 
-// async function listInvoices() {
-// 	const data = await client.sql`
-//     SELECT invoices.amount, customers.name
-//     FROM invoices
-//     JOIN customers ON invoices.customer_id = customers.id
-//     WHERE invoices.amount = 666;
-//   `;
+// Función para obtener los usuarios
+async function getUsers() {
+  const usersData = await db.sql`
+    SELECT name FROM users;
+  `;
+  return usersData.rows;
+}
 
-// 	return data.rows;
-// }
+// Función para eliminar un usuario por ID
+async function deleteUser(userId: string) {
+  const deleteResult = await db.sql`
+    DELETE FROM users WHERE id = ${userId};
+  `;
+  return deleteResult.rowCount; // Devuelve el número de filas eliminadas
+}
 
-export async function GET() {
-  return Response.json({
-    message:
-      'Uncomment this file and remove this line. You can delete this file when you are finished.',
-  });
-  // try {
-  // 	return Response.json(await listInvoices());
-  // } catch (error) {
-  // 	return Response.json({ error }, { status: 500 });
-  // }
+// Función para gestionar la solicitud GET
+export async function GET(request: Request) {
+  try {
+    const invoicesData = await getInvoices();
+    const usersData = await getUsers();
+    return Response.json({ invoices: invoicesData, users: usersData });
+  } catch (error) {
+    return Response.json({ error: 'Error al obtener los datos' }, { status: 500 });
+  }
+}
+
+// Función para gestionar la solicitud DELETE
+export async function DELETE(request: Request) {
+  try {
+    // Obtener el `userId` de los parámetros de la URL
+    const url = new URL(request.url);
+    const userId = url.searchParams.get("userId");
+
+    if (!userId) {
+      return Response.json({ error: 'Falta el parámetro userId' }, { status: 400 });
+    }
+
+    // Verificar si el usuario existe antes de eliminarlo
+    const checkUser = await db.sql`
+      SELECT * FROM users WHERE id = ${userId};
+    `;
+    if (checkUser.rows.length === 0) {
+      return Response.json({ message: 'Usuario no encontrado' }, { status: 404 });
+    }
+
+    // Llamar a la función deleteUser para eliminar al usuario
+    const rowsDeleted = await deleteUser(userId);
+    console.log(`Rows deleted: ${rowsDeleted}`); // Depuración: verificar cuántas filas se eliminaron
+
+    if (rowsDeleted! > 0) {
+      return Response.json({ message: 'Usuario eliminado con éxito' });
+    } else {
+      return Response.json({ message: 'No se encontró el usuario' }, { status: 404 });
+    }
+  } catch (error) {
+    console.error('Error al procesar la solicitud:', error); // Depuración: imprimir el error
+    return Response.json({ error: 'Error al procesar la solicitud' }, { status: 500 });
+  }
 }
