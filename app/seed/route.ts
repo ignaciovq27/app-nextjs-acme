@@ -50,8 +50,9 @@ async function seedUsers() {
         }
 
         return result;
+      }
 
-      } catch (error) {
+      catch (error) {
         console.error(`Error al insertar el usuario ${user.name}:`, error);
         return { error: `Error al insertar el usuario ${user.name}` };
       }
@@ -133,6 +134,7 @@ async function seedRevenue() {
   return insertedRevenue;
 }
 
+// GET REALIZAR SEED EN BD
 // export async function GET() {
 //   // return Response.json({
 //   //   message:
@@ -153,6 +155,7 @@ async function seedRevenue() {
 //   }
 // }
 
+// GET REALIZAR SEED EN BD BORRANDO TODA LA INFO PREVIA EN LAS TABLAS (TRUNCATE)
 export async function GET() {
   try {
     await client.sql`BEGIN`;

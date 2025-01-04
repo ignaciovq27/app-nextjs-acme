@@ -1,6 +1,6 @@
 import { db } from "@vercel/postgres";
 
-// Función para obtener las facturas (invoices)
+// Función para obtener las facturas
 async function getInvoices() {
   const invoicesData = await db.sql`
     SELECT invoices.amount, customers.name
@@ -19,23 +19,25 @@ async function getUsers() {
   return usersData.rows;
 }
 
-// Función para eliminar un usuario por ID
-async function deleteUser(userId: string) {
-  const deleteResult = await db.sql`
-    DELETE FROM users WHERE id = ${userId};
-  `;
-  return deleteResult.rowCount; // Devuelve el número de filas eliminadas
-}
-
 // Función para gestionar la solicitud GET
 export async function GET(request: Request) {
   try {
     const invoicesData = await getInvoices();
     const usersData = await getUsers();
     return Response.json({ invoices: invoicesData, users: usersData });
-  } catch (error) {
+  }
+
+  catch (error) {
     return Response.json({ error: 'Error al obtener los datos' }, { status: 500 });
   }
+}
+
+// Función para eliminar un usuario por ID
+async function deleteUser(userId: string) {
+  const deleteResult = await db.sql`
+    DELETE FROM users WHERE id = ${userId};
+  `;
+  return deleteResult.rowCount; // Devuelve el número de filas eliminadas
 }
 
 // Función para gestionar la solicitud DELETE
@@ -66,6 +68,7 @@ export async function DELETE(request: Request) {
     } else {
       return Response.json({ message: 'No se encontró el usuario' }, { status: 404 });
     }
+
   } catch (error) {
     console.error('Error al procesar la solicitud:', error); // Depuración: imprimir el error
     return Response.json({ error: 'Error al procesar la solicitud' }, { status: 500 });

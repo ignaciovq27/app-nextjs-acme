@@ -47,7 +47,9 @@ export default function Page() {
           >
             <span>Dashboard</span> <ArrowRightIcon className="w-5 md:w-6" />
           </Link>
-          <DeleteUserButton />
+          
+          {/* BOTÓN PARA BORRAR USUARIO ESPECIFICO CON ID */}
+          {/* <DeleteUserButton /> */}
 
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
