@@ -18,14 +18,16 @@ export async function fetchRevenue() {
     // Don't do this in production :)
 
     console.log('Fetching revenue data...');
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
-    console.log('Data fetch completed after 3 seconds.');
+    console.log('Data fetch completed after 1 seconds.');
 
     console.log(data);
 
+    // return data.rows;
     return data.rows;
+
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch revenue data.');
@@ -69,11 +71,14 @@ export async function fetchCardData() {
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
          FROM invoices`;
 
+    // Wait for all promises to resolve
     const data = await Promise.all([
       invoiceCountPromise,
       customerCountPromise,
       invoiceStatusPromise,
     ]);
+
+    console.log(data);
 
     const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
     const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
@@ -86,6 +91,7 @@ export async function fetchCardData() {
       totalPaidInvoices,
       totalPendingInvoices,
     };
+
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch card data.');

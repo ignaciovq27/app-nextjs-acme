@@ -6,7 +6,7 @@ import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 //FETCH DATA
 import { fetchRevenue } from '@/app/lib/data';
 import { fetchLatestInvoices } from '@/app/lib/data';
-
+import { fetchCardData } from '@/app/lib/data';
 
 //FONTS
 import { lusitana } from '@/app/ui/fonts';
@@ -14,22 +14,33 @@ import { lusitana } from '@/app/ui/fonts';
 export default async function Page() {
     const revenue = await fetchRevenue();
     const latestInvoices = await fetchLatestInvoices();
+    const {
+        totalPaidInvoices,
+        totalPendingInvoices,
+        numberOfInvoices,
+        numberOfCustomers,
+    } = await fetchCardData();
 
     return (
         <main>
+            {/* TITLE */}
             <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
                 Dashboard
             </h1>
+
+            {/* CARDS */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {/* <Card title="Collected" value={totalPaidInvoices} type="collected" /> */}
-                {/* <Card title="Pending" value={totalPendingInvoices} type="pending" /> */}
-                {/* <Card title="Total Invoices" value={numberOfInvoices} type="invoices" /> */}
-                {/* <Card
-          title="Total Customers"
-          value={numberOfCustomers}
-          type="customers"
-        /> */}
+                <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+                <Card
+                    title="Total Customers"
+                    value={numberOfCustomers}
+                    type="customers"
+                />
+                <Card title="Paid Collected" value={totalPaidInvoices} type="collected" />
+                <Card title="Pending" value={totalPendingInvoices} type="pending" />
             </div>
+
+            {/* REVENUE & INVOICES */}
             <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
                 <RevenueChart revenue={revenue} />
                 <LatestInvoices latestInvoices={latestInvoices} />
