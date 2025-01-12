@@ -1,17 +1,24 @@
 import { CustomerField } from '@/app/lib/definitions';
 import Link from 'next/link';
+import { Button } from '@/app/ui/button';
+
+//SERVER ACTIONS
+import { createInvoice } from '@/app/lib/actions';
+
+//ICONS
 import {
   CheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
-import { Button } from '@/app/ui/button';
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
   return (
-    <form>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+    //Action attribute is set to the createInvoice function
+    <form action={createInvoice}>
+
+      <div className="rounded-md bg-gray-200 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
@@ -98,13 +105,15 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           </div>
         </fieldset>
       </div>
+
+      {/* Submit Button */}
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/invoices"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          Cancel
+        >Cancel
         </Link>
+
         <Button type="submit">Create Invoice</Button>
       </div>
     </form>
