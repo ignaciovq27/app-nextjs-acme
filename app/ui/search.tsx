@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
+import { useDebouncedCallback } from 'use-debounce';  // Import the useDebouncedCallback hook from the use-debounce library
+
 //COMPONENTS
 
 //ICONS
@@ -16,11 +18,33 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const pathname = usePathname();  // Get the current URL pathname
   const { replace } = useRouter();  // Get the router object
 
-  function handleSearch(term: string) {
+  // Define the handleSearch function
+  // function handleSearch(term: string) {
+  //   // console.log(term);
+  //   console.log(`Searching... ${term}`);
+
+  //   const params = new URLSearchParams(searchParams);
+  //   if (term) {
+  //     params.set('query', term);
+  //   } else {
+  //     params.delete('query');
+  //   }
+  //   console.log(params);
+
+  //   // Update the URL with the "user new input search term" as a query parameter
+  //   // e.g. /dashboard/invoices?query=term
+  //   replace(`${pathname}?${params.toString()}`);
+  // }
+
+  // Debounce the handleSearch function to prevent the search from running on every keystroke
+  const handleSearch = useDebouncedCallback((term) => {
     // console.log(term);
     console.log(`Searching... ${term}`);
 
     const params = new URLSearchParams(searchParams);
+
+    params.set('page', '1');  // Reset the page number to 1 when a new search term is entered
+
     if (term) {
       params.set('query', term);
     } else {
@@ -31,7 +55,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     // Update the URL with the "user new input search term" as a query parameter
     // e.g. /dashboard/invoices?query=term
     replace(`${pathname}?${params.toString()}`);
-  }
+  }, 300);  // Set the debounce time to 300ms
 
   return (
     <div className="relative flex flex-1 flex-shrink-0">
