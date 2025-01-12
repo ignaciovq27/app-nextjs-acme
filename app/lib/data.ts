@@ -18,10 +18,10 @@ export async function fetchRevenue() {
     // Don't do this in production :)
 
     console.log('Fetching revenue data...');
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
-    console.log('Data fetch completed after 1 seconds.');
+    console.log('Data fetch completed after 2 seconds.');
 
     console.log(data);
 
@@ -49,7 +49,11 @@ export async function fetchLatestInvoices() {
       amount: formatCurrency(invoice.amount),
     }));
 
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+    console.log('Fetching latest Invoices data...');
+
     console.log(data);
+    console.log('Latest invoices data fetched after 4 seconds.');
 
     return latestInvoices;
 

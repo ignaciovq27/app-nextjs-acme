@@ -18,15 +18,24 @@ const config: Config = {
           600: '#2F6FEB',
         },
       },
-    },
-    keyframes: {
-      shimmer: {
-        '100%': {
-          transform: 'translateX(100%)',
+      animation: {
+        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',  // Asegúrate de que esté en `extend`
+      },
+      keyframes: {
+        fadeInUp: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
         },
       },
     },
   },
   plugins: [require('@tailwindcss/forms')],
 };
+
 export default config;
