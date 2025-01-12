@@ -17,7 +17,8 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const { replace } = useRouter();  // Get the router object
 
   function handleSearch(term: string) {
-    console.log(term);
+    // console.log(term);
+    console.log(`Searching... ${term}`);
 
     const params = new URLSearchParams(searchParams);
     if (term) {
