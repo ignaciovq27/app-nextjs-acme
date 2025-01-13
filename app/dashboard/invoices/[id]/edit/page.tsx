@@ -3,6 +3,9 @@ import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers } from '@/app/lib/data';
 import { fetchInvoiceById } from '@/app/lib/data';
 
+//NOT FOUND
+import { notFound } from 'next/navigation';
+
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;  // Obtiene el objeto params (que incluye el id) desde la promesa por medio de ruta de carpeta [id]
     const id = params.id;  // Extrae el valor de id
@@ -11,6 +14,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         fetchInvoiceById(id),
         fetchCustomers(),
     ]);
+
+    // Throw a '404 error' if the invoice is not found
+    if (!invoice) {
+        notFound();
+    }
+
     return (
         <main>
             <Breadcrumbs
