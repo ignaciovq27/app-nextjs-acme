@@ -10,8 +10,8 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 
 //CCS
-import styles from '@/app/ui/home.module.css';
-import DeleteUserButton from './ui/button-delete';
+// import styles from '@/app/ui/home.module.css';
+// import DeleteUserButton from './ui/button-delete';
 
 export default function Page() {
   return (

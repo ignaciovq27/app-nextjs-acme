@@ -21,6 +21,8 @@ async function getUsers() {
 
 // Función para gestionar la solicitud GET
 export async function GET(request: Request) {
+  console.log(request)
+
   try {
     const invoicesData = await getInvoices();
     const usersData = await getUsers();
@@ -28,6 +30,7 @@ export async function GET(request: Request) {
   }
 
   catch (error) {
+    console.log(error);
     return Response.json({ error: 'Error al obtener los datos' }, { status: 500 });
   }
 }

@@ -173,6 +173,7 @@ export async function GET() {
 
     return Response.json({ message: 'Base de datos reiniciada y sembrada exitosamente' });
   } catch (error) {
+    console.log(error)
     await client.sql`ROLLBACK`;
     return Response.json({ error: 'Error al reiniciar la base de datos' }, { status: 500 });
   }
